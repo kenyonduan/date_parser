@@ -10,26 +10,28 @@ import (
 )
 
 // 默认的日期布局
+// default datetime layout
 var (
 	defaultLayouts = map[string]string{
-		"en": "on January 2, 2006",      // 美国
-		"uk": "on 2 January 2006",       // 英国
-		"de": "am 2. January 2006",      // 德语
-		"jp": "2006年January2日",          // 日语
-		"fr": "le 2 January 2006",       // 法语
-		"it": "il 2 January 2006",       // 意大利语
-		"es": "el 2 de January de 2006", // 西班牙语
+		"en": "on January 2, 2006",      // US
+		"uk": "on 2 January 2006",       // UK
+		"de": "am 2. January 2006",      // DE
+		"jp": "2006年January2日",          // JP
+		"fr": "le 2 January 2006",       // FR
+		"it": "il 2 January 2006",       // IT
+		"es": "el 2 de January de 2006", // ES
 	}
 
-	// 含有中文的字符
+	// contains chinese
 	asiaRegex = regexp.MustCompile(`((\d{1,2})月)`)
-	// 韩国的月份
+	// contains korean
 	koRegex = regexp.MustCompile(`((\d{1,2})월)`)
 
-	// 默认的 en 的 longMonthName
+	// default en LongMonthName
 	enLongMonthNames = i18n.LongMonthNames["en"]
 )
 
+// TODO: change doc to english
 // ParserLangDate 各国日期月份翻译,支持语言列表:
 // ar 阿根廷
 // de 德国
@@ -94,7 +96,7 @@ func ParserLangDate(lang, value string, layout ...string) (time.Time, error) {
 	if _, ok := defaultLayouts[lang]; ok {
 		lastLayout = defaultLayouts[lang]
 	} else if len(layout) == 0 {
-		return time.Time{}, fmt.Errorf("没有找到默认语言的日期布局,请传入一个自定义布局")
+		return time.Time{}, fmt.Errorf("no layout to parse date string")
 	}
 	// 只选取第一个, 为了默认值
 	if len(layout) > 0 {
