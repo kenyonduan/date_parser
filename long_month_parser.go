@@ -56,14 +56,8 @@ func ParserLangDate(lang, value string, layout string) (time.Time, error) {
 		return time.Time{}, fmt.Errorf("no layout to parse date string")
 	}
 	switch lang {
-	case "jp":
+	case "jp", "zh":
 		v, err := regexReplaceVal(asiaRegex, value, enLongMonthNames)
-		if err != nil {
-			return time.Time{}, err
-		}
-		value = v
-	case "zh":
-		v, err := regexReplaceVal(asiaRegex, value, enShortMonthNames)
 		if err != nil {
 			return time.Time{}, err
 		}
