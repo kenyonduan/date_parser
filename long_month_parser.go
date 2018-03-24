@@ -1,27 +1,16 @@
 package date_parser
 
 import (
-	"regexp"
-	"time"
-	"strings"
 	"fmt"
+	"regexp"
 	"strconv"
+	"strings"
+	"time"
+
 	"github.com/wppurking/date_parser/i18n"
 )
 
-// 默认的日期布局
-// default datetime layout
 var (
-	defaultLayouts = map[string]string{
-		"en": "on January 2, 2006",      // US
-		"uk": "on 2 January 2006",       // UK
-		"de": "am 2. January 2006",      // DE
-		"jp": "2006年January2日",          // JP
-		"fr": "le 2 January 2006",       // FR
-		"it": "il 2 January 2006",       // IT
-		"es": "el 2 de January de 2006", // ES
-	}
-
 	// contains chinese
 	asiaRegex = regexp.MustCompile(`((\d{1,2})月)`)
 	// contains korean
@@ -31,7 +20,6 @@ var (
 	enLongMonthNames = i18n.LongMonthNames["en"]
 )
 
-// TODO: change doc to english
 // ParserLangDate 各国日期月份翻译,支持语言列表:
 // ar 阿根廷
 // de 德国
@@ -61,8 +49,11 @@ var (
 // 所以
 // 1. 只需要对输入的 value 将月份调整到 en 格式即可
 // 2. 同时对 layout 也映射处理, 将不同语言的 month 转换为 en 的 `月`
-func ParserLangDate(lang, value string, layout ...string) (time.Time, error) {
-	lastLayout := defaultLayouts["en"]
+func ParserLangDate(lang, value string, layout string) (time.Time, error) {
+	// 如果没有默认值, 则选择
+	if len(layout) <= 0 {
+		return time.Time{}, fmt.Errorf("no layout to parse date string")
+	}
 	switch lang {
 	case "jp", "zh":
 		v, err := regexReplaceVal(asiaRegex, value, enLongMonthNames)
@@ -82,6 +73,7 @@ func ParserLangDate(lang, value string, layout ...string) (time.Time, error) {
 		lang = "en"
 	default:
 		for k, v := range i18n.LongMonthNames[lang] {
+			// 寻找到对应的月份进行替换
 			if strings.Contains(value, v) {
 				month := enLongMonthNames[k]
 				value = strings.Replace(value, v, month, -1)
@@ -89,22 +81,10 @@ func ParserLangDate(lang, value string, layout ...string) (time.Time, error) {
 			}
 		}
 	}
-	if _, ok := defaultLayouts[lang]; ok {
-		lastLayout = defaultLayouts[lang]
-	}
-
-	if _, ok := defaultLayouts[lang]; ok {
-		lastLayout = defaultLayouts[lang]
-	} else if len(layout) == 0 {
-		return time.Time{}, fmt.Errorf("no layout to parse date string")
-	}
-	// 只选取第一个, 为了默认值
-	if len(layout) > 0 {
-		lastLayout = layout[0]
-	}
-	return time.Parse(lastLayout, value)
+	return time.Parse(layout, value)
 }
 
+// 抽取 val 中的月份数字, 然后使用 lm 中的索引对应的值替换掉
 func regexReplaceVal(reg *regexp.Regexp, val string, lm []string) (string, error) {
 	mcs := reg.FindStringSubmatch(val)
 	if mcs != nil && len(mcs) == 3 {
@@ -117,4 +97,3 @@ func regexReplaceVal(reg *regexp.Regexp, val string, lm []string) (string, error
 	}
 	return "", nil
 }
-
