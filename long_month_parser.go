@@ -17,7 +17,8 @@ var (
 	koRegex = regexp.MustCompile(`((\d{1,2})월)`)
 
 	// default en LongMonthName
-	enLongMonthNames = i18n.LongMonthNames["en"]
+	enLongMonthNames  = i18n.LongMonthNames["en"]
+	enShortMonthNames = i18n.ShortMonthNames["en"]
 )
 
 // ParserLangDate 各国日期月份翻译,支持语言列表:
@@ -55,8 +56,14 @@ func ParserLangDate(lang, value string, layout string) (time.Time, error) {
 		return time.Time{}, fmt.Errorf("no layout to parse date string")
 	}
 	switch lang {
-	case "jp", "zh":
+	case "jp":
 		v, err := regexReplaceVal(asiaRegex, value, enLongMonthNames)
+		if err != nil {
+			return time.Time{}, err
+		}
+		value = v
+	case "zh":
+		v, err := regexReplaceVal(asiaRegex, value, enShortMonthNames)
 		if err != nil {
 			return time.Time{}, err
 		}
