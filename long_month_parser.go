@@ -11,14 +11,8 @@ import (
 )
 
 var (
-	// contains chinese
-	asiaRegex = regexp.MustCompile(`((\d{1,2})月)`)
-	// contains korean
-	koRegex = regexp.MustCompile(`((\d{1,2})월)`)
-
 	// default en LongMonthName
-	enLongMonthNames  = i18n.LongMonthNames["en"]
-	enShortMonthNames = i18n.ShortMonthNames["en"]
+	enLongMonthNames = i18n.LongMonthNames["en"]
 )
 
 // ParserLangDate 各国日期月份翻译,支持语言列表:
@@ -55,30 +49,17 @@ func ParserLangDate(lang, value string, layout string) (time.Time, error) {
 	if len(layout) <= 0 {
 		return time.Time{}, fmt.Errorf("no layout to parse date string")
 	}
-	switch lang {
-	case "jp", "zh":
-		v, err := regexReplaceVal(asiaRegex, value, enLongMonthNames)
-		if err != nil {
-			return time.Time{}, err
-		}
-		value = v
-	case "ko":
-		v, err := regexReplaceVal(koRegex, value, enLongMonthNames)
-		if err != nil {
-			return time.Time{}, err
-		}
-		value = v
-	default:
-		// refs: https://github.com/theplant/cldr/blob/master/resources/locales/de/calendar.go
-		for k, v := range i18n.LongMonthNames[lang] {
-			// 寻找到对应的月份进行替换
-			if strings.Contains(value, v) {
-				month := enLongMonthNames[k]
-				value = strings.Replace(value, v, month, -1)
-				break
-			}
+	// zh, ko, jp 这些语言, 直接通过 layout 来负责解析
+	// refs: https://github.com/theplant/cldr/blob/master/resources/locales/de/calendar.go
+	for k, v := range i18n.LongMonthNames[lang] {
+		// 寻找到对应的月份进行替换
+		if strings.Contains(value, v) {
+			month := enLongMonthNames[k]
+			value = strings.Replace(value, v, month, -1)
+			break
 		}
 	}
+	fmt.Println("layout:", layout, "value:", value)
 	return time.Parse(layout, value)
 }
 

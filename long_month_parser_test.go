@@ -1,6 +1,7 @@
 package date_parser
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -29,7 +30,7 @@ func TestParserLangDate(t *testing.T) {
 	eval, _ = ParserLangDate("de", "am 26. Dezember 2018", "am 02. January 2006")
 	assert.Equal(t, tde, eval)
 
-	eval, _ = ParserLangDate("jp", "on 2018年09月13日", "on 2006年January02日")
+	eval, _ = ParserLangDate("jp", "2018年09月13日", "2006年01月02日")
 	assert.Equal(t, tval, eval)
 
 	eval, _ = ParserLangDate("fr", "le 13 septembre 2018", "le 02 January 2006")
@@ -55,7 +56,7 @@ func TestParserLangDate(t *testing.T) {
 
 	// ----------- amazon 还未开启 ---------
 
-	eval, _ = ParserLangDate("ko", "2018년9월13일", "2006년January2일")
+	eval, _ = ParserLangDate("ko", "2018년9월13일", "2006년1월2일")
 	assert.Equal(t, tval, eval)
 }
 
@@ -65,3 +66,20 @@ func TestSigleParse(t *testing.T) {
 	assert.Equal(t, tbr, eval)
 }
 
+func TestZhFormat(t *testing.T) {
+	tb, err := time.Parse("2006-01-02", "2018-03-21")
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(tb)
+	tb, err = time.Parse("2006年1月2日", "2018年3月21日")
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(tb)
+	tb, err = time.Parse("2006年01月02日", "2018年03月21日")
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(tb)
+}

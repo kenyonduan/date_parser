@@ -1,7 +1,7 @@
 package i18n
 
 func init() {
-	ShortMonthNames[`jp`] = []string{
+	ShortMonthNames[`jp_ignore`] = []string{
 		`---`,
 		`1月`,
 		`2月`,
@@ -17,7 +17,7 @@ func init() {
 		`12月`,
 	}
 
-	LongMonthNames[`jp`] = []string{
+	LongMonthNames[`jp_ignore`] = []string{
 		`---`,
 		`1月`,
 		`2月`,
@@ -33,7 +33,7 @@ func init() {
 		`12月`,
 	}
 
-	ShortWeekdays[`jp`] = []string{
+	ShortWeekdays[`jp_ignore`] = []string{
 		`日`,
 		`月`,
 		`火`,
@@ -43,7 +43,7 @@ func init() {
 		`土`,
 	}
 
-	LongWeekdays[`jp`] = []string{
+	LongWeekdays[`jp_ignore`] = []string{
 		`日曜日`,
 		`月曜日`,
 		`火曜日`,

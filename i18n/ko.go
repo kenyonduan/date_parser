@@ -1,7 +1,7 @@
 package i18n
 
 func init() {
-	ShortMonthNames[`ko`] = []string{
+	ShortMonthNames[`ko_ignore`] = []string{
 		`---`,
 		`1월`,
 		`2월`,
@@ -17,7 +17,7 @@ func init() {
 		`12월`,
 	}
 
-	LongMonthNames[`ko`] = []string{
+	LongMonthNames[`ko_ignore`] = []string{
 		`---`,
 		`1월`,
 		`2월`,
@@ -33,7 +33,7 @@ func init() {
 		`12월`,
 	}
 
-	ShortWeekdays[`ko`] = []string{
+	ShortWeekdays[`ko_ignore`] = []string{
 		`일`,
 		`월`,
 		`화`,
@@ -43,7 +43,7 @@ func init() {
 		`토`,
 	}
 
-	LongWeekdays[`ko`] = []string{
+	LongWeekdays[`ko_ignore`] = []string{
 		`일요일`,
 		`월요일`,
 		`화요일`,
