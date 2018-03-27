@@ -68,11 +68,8 @@ func ParserLangDate(lang, value string, layout string) (time.Time, error) {
 			return time.Time{}, err
 		}
 		value = v
-	case "en", "us", "ca", "in", "au":
-		// refs: https://github.com/theplant/cldr/blob/master/resources/locales/de/calendar.go
-		// 所有 i18n 的语言格式化
-		lang = "en"
 	default:
+		// refs: https://github.com/theplant/cldr/blob/master/resources/locales/de/calendar.go
 		for k, v := range i18n.LongMonthNames[lang] {
 			// 寻找到对应的月份进行替换
 			if strings.Contains(value, v) {
