@@ -59,7 +59,6 @@ func ParserLangDate(lang, value string, layout string) (time.Time, error) {
 			break
 		}
 	}
-	fmt.Println("layout:", layout, "value:", value)
 	return time.Parse(layout, value)
 }
 
