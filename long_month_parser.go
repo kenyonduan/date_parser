@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/wppurking/date_parser/i18n"
+	"date_parser/i18n"
 )
 
 var (
